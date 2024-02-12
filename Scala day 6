@@ -1,0 +1,79 @@
+1.Path sum
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null) {
+ *   var value: Int = _value
+ *   var left: TreeNode = _left
+ *   var right: TreeNode = _right
+ * }
+ */
+object Solution {
+    def hasPathSum(root: TreeNode, targetSum: Int): Boolean = {
+        def helper(node: TreeNode, sum: Int): Boolean ={
+            if (node == null) false
+            else if (node.right == null && node.left == null) {
+                (sum + node.value) == targetSum
+            } else {
+                val nSum = sum + node.value
+                helper(node.left, nSum) || helper(node.right, nSum)
+            }
+        }
+        helper(root, 0)
+    }
+}
+2.Number of Islands
+object Solution {
+   def dfs(i: Int, j: Int, grid: Array[Array[Char]]): Unit = {
+    if (i < 0 || i >= grid.length || j < 0 || j >= grid(0).length || grid(i)(j) != '1') return
+    grid(i)(j) = '0'
+    dfs(i - 1, j, grid)
+    dfs(i + 1, j, grid)
+    dfs(i, j - 1, grid)
+    dfs(i, j + 1, grid)
+  }
+
+  def numIslands(grid: Array[Array[Char]]): Int = {
+    val n = grid.length
+    val m = grid(0).length
+    val islandCount = (for {
+      i <- 0 until n
+      j <- 0 until m
+    } yield {
+      if (grid(i)(j) == '1') {
+        dfs(i, j, grid)
+        1
+      } else 0
+    }).sum
+    islandCount
+        
+    }
+}
+
+3.Min Stack
+class MinStack() {
+    
+    import scala.collection.mutable.Stack
+    
+    val stack = Stack[(Int, Int)]()
+    
+    def push(`val`: Int) {
+        
+        val minElement = if(stack.nonEmpty && stack.top._2 < `val`) stack.top._2 else `val`
+        val newElement = (`val`, minElement)
+        
+        stack.push(newElement)
+    }
+
+    def pop() = stack.pop
+
+    def top(): Int = {
+        if(stack.nonEmpty) stack.top._1
+        else throw new NoSuchElementException("Stack is empty")
+    }
+
+    def getMin(): Int = {
+        if(stack.nonEmpty) stack.top._2
+        else throw new NoSuchElementException("Stack is empty")
+    }
+	
+}
