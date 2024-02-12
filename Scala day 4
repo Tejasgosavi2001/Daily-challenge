@@ -1,0 +1,109 @@
+1.Best Time to Buy and Sell Stock with Transaction Fee
+object Solution {
+    def maxProfit(prices: Array[Int], fee: Int): Int = {
+         var res = 0
+        var acc = -prices.head
+        prices.foreach(f=>{
+          res = res max (acc + f - fee)
+          acc = acc max (res - f)
+        })
+        res
+    }
+}
+
+2.Longest Substring Without Repeating Characters
+object Solution {
+    def lengthOfLongestSubstring(s: String): Int = {
+         var n = s.size
+        var ans = 0;
+        var char_count=Array.fill(256)(0)
+      
+      var r=0
+      var l=0
+    
+        while(r<n)
+        {
+           char_count(s(r))+=1
+            while (char_count(s(r)) > 1) {
+                char_count(s(l))-=1
+                l=l+1
+            }
+            ans = ans.max(r - l + 1);
+            r=r+1
+            
+        }
+        return ans;
+    }
+}
+
+3.Group Anagrams
+object Solution {
+    def groupAnagrams(strs: Array[String]): List[List[String]] = {
+          strs.toList.groupBy(_.sorted).values.toList
+    }
+}
+
+4.Valid Parenthesis
+
+ import scala.collection.mutable.Stack
+ object Solution {
+    def isValid(s: String): Boolean = {
+           val stack = Stack[Char]()
+
+        for(ch <- s.toList) {
+            
+            if(stack.isEmpty || ch == '(' || ch == '[' || ch == '{') stack.push(ch)
+            else if(ch == ')' && stack.top == '(') stack.pop
+            else if(ch == ']' && stack.top == '[') stack.pop
+            else if(ch == '}' && stack.top == '{') stack.pop
+            else return false
+
+        }
+
+        stack.isEmpty
+    }
+}
+
+5.Average of Levels in Binary Tree
+
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null) {
+ *   var value: Int = _value
+ *   var left: TreeNode = _left
+ *   var right: TreeNode = _right
+ * }
+ */
+import scala.collection.mutable.Queue
+object Solution {
+    def averageOfLevels(root: TreeNode): Array[Double] = {
+        val result = scala.collection.mutable.ArrayBuffer[Double]()
+        var currentLevel = List(root)
+        while (currentLevel.nonEmpty) {
+        val nextLevel = scala.collection.mutable.ListBuffer[TreeNode]()
+        var sum = 0.0
+            for (node <- currentLevel) {
+                sum += node.value
+                if (node.left != null) nextLevel += node.left
+                if (node.right != null) nextLevel += node.right
+            }
+            result += sum / currentLevel.size
+            currentLevel = nextLevel.toList
+        }
+        result.toArray
+    }
+}
+
+6.Word Break
+object Solution {
+    def wordBreak(s: String, wordDict: List[String]): Boolean = {
+          val n = s.length
+    val f = Array.fill(n + 1)(false)
+    f(0) = true
+    for {i <- 1 to n
+         j <- 0 until i
+         if (f(j) && wordDict.contains(s.substring(j, i)))
+         } yield f(i) = true
+    f.last
+    }
+}
