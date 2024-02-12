@@ -1,0 +1,142 @@
+1.Longest consecutive sequence
+object Solution {
+    def longestConsecutive(nums: Array[Int]): Int = {
+        		if(nums.length == 0){
+			return 0
+		}
+		val array = nums.sorted
+
+		var finallength = 1
+		var currentlength = 1
+
+		for(i <- 1 until array.length){
+			if(array(i -1) != array(i)){
+				if(array(i - 1) + 1 == array(i)){
+					currentlength += 1
+				} else {
+					finallength = math.max(currentlength,finallength)
+					currentlength= 1
+				}
+			}
+		}
+		return math.max(finallength, currentlength)
+    }
+}
+
+2.Decode String
+import scala.collection.mutable.Stack
+object Solution {
+    def decodeString(s: String): String = {
+          
+    var chars:Stack[String]=Stack()
+       var nums:Stack[Int]=Stack()
+    var res=""
+    var num = 0;
+    for (c<-s) {
+        if (c.isDigit) {
+            num = num * 10 + (c - '0');
+        } else if (c == '[') {
+            chars.push(res);
+            nums.push(num);
+            res = "";
+            num = 0;
+        } else if (c == ']') {
+            var tmp = res;
+            res = chars.top;
+            chars.pop();
+            
+            for(i<-nums.top until 0 by -1){
+             res += tmp;
+            }
+            nums.pop();
+        } else {
+            res += c;
+        }
+    }
+    return res;
+    }
+}
+
+3.Search in Rotated Array
+object Solution {
+    def search(nums: Array[Int], target: Int): Int = {
+         var n = nums.size;
+        var low = 0;
+        var high = n - 1;
+        while(low <= high) {
+            var mid = (low + high) / 2;
+            if(nums(mid) == target) return mid;
+            if(nums(low) <= nums(mid)) {
+                if(nums(low) <= target && target <= nums(mid)) {
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            } 
+            else {
+                if(nums(mid) <= target && target <= nums(high)) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+4.Flatten Nested Iterator
+ 
+class NestedIterator(_nestedList: List[NestedInteger]) {
+   var index= -1;
+   var temparray=Array[Int]();
+   for(current<-_nestedList){
+       if(current.isInteger){
+           temparray:+=current.getInteger
+       }
+       else{
+           temparray++=recur(current.getList)
+       }
+
+   }
+
+        def recur(temparray:Array[NestedInteger]):Array[Int]={
+            var finalarray=Array[Int]()
+            for(current<-temparray){
+                        if(current.isInteger){
+                        finalarray:+=current.getInteger
+                    }
+                    else{
+                        finalarray++=recur(current.getList)
+                    }
+            }
+            finalarray
+        }
+   def next():Int={
+       index+=1
+       temparray(index)
+   }
+   def hasNext():Boolean={
+       index+1!=temparray.size
+   }
+       
+   }
+    
+    
+5.House robber
+object Solution {
+    def rob(nums: Array[Int]): Int = {
+  //  val memo= Array.ofDim[Int](nums.length + 1)
+    val memo=new Array[Int](nums.length+1)
+
+    memo(0) = 0
+    memo(1) = nums.head
+    
+    for (i <- 1 until nums.length) {
+      memo(i + 1) = Math.max(memo(i), memo(i - 1) + nums(i))
+    }
+    
+    memo(nums.length)
+
+    }
+}
