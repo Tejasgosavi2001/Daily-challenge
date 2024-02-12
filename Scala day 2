@@ -1,0 +1,98 @@
+1.Power (x,n)
+object Solution {
+    def myPow(x: Double, n: Int): Double = {
+       if(n==0){
+           return 1
+       }
+
+       var output=1.0
+       var base=x.toDouble
+        var exponent=n.toLong
+
+        if(exponent<0){
+            exponent=(-exponent)
+            base=1/base
+        }
+        while(exponent>0){
+            if(exponent%2==1){
+                output=output*base
+            }
+            base=base*base
+            exponent=exponent/2
+        }
+       output
+    }
+}
+
+2.Merge Sorted Array
+object Solution {
+    def merge(nums1: Array[Int], m: Int, nums2: Array[Int], n: Int): Unit = {
+       
+       for (t <- m until m + n){
+          nums1(t) = nums2(t - m)
+       } 
+        nums1.sortInPlace
+    }
+}
+
+3.Valid Anagram
+import scala.collection.mutable.Map 
+object Solution {
+    def isAnagram(s: String, t: String): Boolean = {
+          var m=Map[Char,Int]()
+          for(i<-s){
+              if(m.contains(i)){
+                   m(i)=m(i)+1
+              }
+              else{
+                  m(i)=1
+              }
+             
+          }
+          for(i<-t){
+               if(m.contains(i)){
+                   m(i)=m(i)-1
+              }
+              else{
+                  return false
+              }
+          }
+          for((key,value)<-m){
+              if(value!=0){
+                  return false
+              }
+          }
+          return true
+    }
+    
+}
+
+4.Reverse Words in String
+object Solution {
+    def reverseWords(s: String): String = {
+        s.split(" ").filter(x=>x!="").reverse.mkString(" ")
+    }
+}
+
+5.Coin Change
+import scala.collection.mutable.ArrayBuffer
+object Solution {
+    def coinChange(coins: Array[Int], amount: Int): Int = {
+       
+        val memo=ArrayBuffer.fill(amount+1)(amount+1)
+        memo(0)=0
+        for(coin<-coins){
+                    var currentamount=coin
+            while(currentamount<=amount){
+               
+                memo(currentamount)=memo(currentamount).min(memo(currentamount-coin)+1)
+                 
+                currentamount=currentamount+1
+            }
+        }
+        if(memo(amount)>amount){
+            return -1
+        }
+        return memo(amount)
+    }
+}
