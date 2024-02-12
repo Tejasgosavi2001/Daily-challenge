@@ -1,0 +1,70 @@
+1.Edit Distance
+object Solution {
+    def minDistance(word1: String, word2: String): Int = {
+        var n=word1.size
+        var m=word2.size
+        var memo=Array.ofDim[Int](n+1,m+1)
+        for(i<-0 to n){
+            memo(i)(0)=i
+        }
+        for(j<-0 to m){
+            memo(0)(j)=j
+        }
+        for(i<-1 to n;j<-1 to m){
+          if(word1(i-1)==word2(j-1)){
+                  memo(i)(j)=memo(i-1)(j-1)
+            }
+            else{
+                memo(i)(j)=math.min(math.min(memo(i)(j-1),memo(i-1)(j)),memo(i-1)(j-1))+1
+            }
+        }
+        return memo.last.last
+    }
+}
+
+2.Find Minimum in Rotated Sorted Array
+object Solution {
+    def findMin(nums: Array[Int]): Int = {
+         var left = 0
+         var right = nums.size - 1
+
+        while (left < right) {
+         var mid = left + (right - left) / 2
+        if (nums(mid) > nums(right)){
+            left = mid + 1
+        }
+        else{
+            right = mid
+        }
+        }
+
+       nums(left)
+    }
+}
+
+3.Convert Sorted Array to Binary Search Tree
+/**
+ * Definition for a binary tree node.
+ * class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null) {
+ *   var value: Int = _value
+ *   var left: TreeNode = _left
+ *   var right: TreeNode = _right
+ * }
+ */
+object Solution {
+    def sortedArrayToBST(nums: Array[Int]): TreeNode = {
+        def bt(left: Int, right: Int): TreeNode =
+        if (left >= right)
+            return null
+        else {
+            var middle = (left + right) / 2
+            new TreeNode(
+            _value = nums(middle),
+            _left = bt(left, right = middle),
+            _right = bt(left = middle + 1, right)
+            )
+      }
+
+     return bt(left = 0, right = nums.size)
+    }
+}
